@@ -113,11 +113,16 @@ const createOrder = async (body: any, orderInitiator: any) => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const verifyPaymentDone = async (reference: any) => {
   try {
+    console.log(reference);
+    // if (!reference || Object.keys(reference).length === 0) {
+    //   throw new AppError(httpStatus.NOT_ACCEPTABLE, 'Reference must be passed!!!')
+    // }
     const data = await verifyPayment(reference.reference);
     if (data) {
       // Update the transaction status to 'paid'
       const receipt = await Transaction.findOne({
         reference: reference.reference,
+        status:'pending'
       });
       if (!receipt) {
         throw new AppError(
@@ -164,12 +169,6 @@ const getAllMyTransactions = async (userId: any) => {
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found!!!')
   }
-  if (user.role === 'tailor') {
-    throw new AppError(
-      httpStatus.FORBIDDEN,
-      'Only ordinary user can use this route!!!',
-    )
-  }
   return Transaction.find({ buyer: userId }).populate('order').exec()
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -200,6 +199,7 @@ const getTransactionDetails = async (transactionId: any) => {
           path: 'orderTracker',
           populate: {
             path: 'trackerLogs',
+            model: 'OrderTrackerLogs', 
           },
         },
       ],
@@ -207,6 +207,7 @@ const getTransactionDetails = async (transactionId: any) => {
     .exec();
   return transaction;
 };
+
 
 interface OrderTrackerUpdateBody {
   deliveryStatus: string;

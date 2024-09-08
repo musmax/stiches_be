@@ -24,6 +24,12 @@ router.post(
   validateRequest(ProductValidation.productStoreValidationSchema),
   ProductController.createProductStore,
 );
+router.post(
+  '/rate-store',
+  authGuard(),
+  validateRequest(ProductValidation.storeRatingValidationSchema),
+  ProductController.rateAStore,
+);
 
 router.get(
   '/me',

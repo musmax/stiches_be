@@ -12,10 +12,8 @@ router.post('/upload', upload.single('file'), async (req, res) => {
       message: 'No file uploaded.',
     });
   }
-
   try {
     const result = await cloudinary.uploader.upload(req.file.path);
-    
     // Save the uploaded file details to the database
     const uploadedFile = await Upload.create({
       publicId: result.public_id,

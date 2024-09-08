@@ -25,9 +25,36 @@ const fetchMe = catchAsync(async (req, res) => {
   })
 })
 
+const queryAllUsers = catchAsync(async (req, res) => {
+  const user = await UserServices.queryAllUsers()
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Users fetched successfully',
+    data: user,
+  })
+})
+const editUserById = catchAsync(async (req, res) => {
+  const user = await UserServices.editUserById(req.query.userId,req.body)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User edited successfully',
+    data: user,
+  })
+})
+const fetchUserById = catchAsync(async (req, res) => {
+  const user = await UserServices.fetchUserById(req.query.userId)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User fetched successfully',
+    data: user,
+  })
+})
+
 const createUserAddress = catchAsync(async (req, res) => {
   await UserServices.createUserAddress(req.body, req.user.id)
-
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
@@ -50,4 +77,7 @@ export const UserControllers = {
   createUserAddress,
   fetchMe,
   createUserMeasurement,
+  queryAllUsers,
+  editUserById,
+  fetchUserById,
 }

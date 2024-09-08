@@ -51,6 +51,15 @@ const getAllMyProducts = catchAsync(async (req, res) => {
     data,
   })
 })
+const rateAStore = catchAsync(async (req, res) => {
+  const data = await ProductService.rateAStore(req.query.storeId, req.body)
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Store rated successfully',
+    data,
+  })
+})
 const getProductById = catchAsync(async (req, res) => {
   const data = await ProductService.getProductById(req.query)
   sendResponse(res, {
@@ -78,4 +87,5 @@ export const ProductController = {
   createProductStore,
   getProductById,
   updateProduct,
+  rateAStore
 }

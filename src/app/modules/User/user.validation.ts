@@ -20,6 +20,13 @@ const userMeasurementValidationSchema = z.object({
     content: z.array(z.string()),
   }),
 })
+const editProfileValidationSchema = z.object({
+  body: z.object({
+    firstname: z.string().optional(),
+    lastname: z.string().optional(),
+    profileImage: z.string().optional(),
+  }),
+})
 
 const changeStatusValidationSchema = z.object({
   body: z.object({
@@ -31,4 +38,5 @@ export const UserValidation = {
   changeStatusValidationSchema,
   userAddresValidationSchema,
   userMeasurementValidationSchema,
+  editProfileValidationSchema,
 }

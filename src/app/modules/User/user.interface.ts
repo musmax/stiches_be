@@ -21,6 +21,8 @@ export interface TUser extends Document {
   userSavedAddresses: TUserAddress[]
   userMeasurement: ObjectId
   store: string
+  profileImage: string
+  isTrusted: boolean
   createJwt(): string
 }
 

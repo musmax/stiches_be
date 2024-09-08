@@ -9,11 +9,33 @@ const router = express.Router()
 
 router.post(
   '',
-  authGuard(USER_ROLE.admin),
+  authGuard(),
   validateRequest(UserValidation.userValidationSchema),
   UserControllers.createUser,
 )
 router.get('/me', authGuard(), UserControllers.fetchMe)
+router.post(
+  '/address',
+  authGuard(),
+  validateRequest(UserValidation.userAddresValidationSchema),
+  UserControllers.createUserAddress,
+)
+router.patch(
+  '/edit-profile',
+  authGuard(),
+  validateRequest(UserValidation.editProfileValidationSchema),
+  UserControllers.editUserById,
+)
+router.get(
+  '/fetch-user',
+  authGuard(),
+  UserControllers.fetchUserById,
+)
+router.get(
+  '/fetch-users',
+  authGuard(),
+  UserControllers.queryAllUsers,
+)
 router.post(
   '/address',
   authGuard(),

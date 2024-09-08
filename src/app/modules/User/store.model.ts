@@ -8,6 +8,10 @@ const StoreSchema = new Schema<TStore>(
       type: String,
       required: true,
     },
+    ratingStarsCount: {
+      type: Number,
+      defaultValue: 0,
+    },
     about: {
       type: String,
     },

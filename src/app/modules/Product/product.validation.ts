@@ -48,9 +48,15 @@ const productStoreValidationSchema = z.object({
     logo: z.string(),
   }),
 })
+const storeRatingValidationSchema = z.object({
+  body: z.object({
+    rating: z.number().min(1).max(5),
+  }),
+})
 
 export const ProductValidation = {
   productValidationSchema,
   productStoreValidationSchema,
-  updateProductValidationSchema
+  updateProductValidationSchema,
+  storeRatingValidationSchema
 }

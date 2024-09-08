@@ -21,28 +21,28 @@ router.get(
 );
 router.get(
   '/delivery-status',
-  authGuard(),
+  // authGuard(),
   // validateRequest(OrderValidation.orderVerifyValidationSchema),
   OrderController.getOrderDeliveryStatus,
 );
 router.patch(
-  '/update:orderId',
+  '/update-tracker',
   authGuard(),
   validateRequest(OrderValidation.orderTrackerValidationSchema),
   OrderController.updateOrderTracker,
 );
 router.get(
-  '/transactions/buyer',
+  '/transactions/me',
   authGuard(),
   OrderController.getAllMyTransactions,
 );
 router.get(
-  '/details',
+  '/transactions/details',
   authGuard(),
   OrderController.getTransactionDetails,
 );
 router.get(
-  '/transactions/seller',
+  '/transactions/store',
   authGuard(),
   OrderController.getAllTailorTransactions,
 );

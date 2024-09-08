@@ -12,6 +12,9 @@ const createProduct = async (body: any, createdBy: any) => {
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
+  if (user.role !== "tailor") {
+    throw new AppError(httpStatus.FORBIDDEN, 'Only tailors can create products');
+  }
   const { productImages } = body;
   const store = await Store.findOne({createdBy:user._id})
   if (!store) {
@@ -45,17 +48,33 @@ const createProduct = async (body: any, createdBy: any) => {
 };
 
 const updateProduct = async (body: any, createdBy: any, productId: any) => {
-    const product = await Product.findById(productId)
-    if (!product) {
-      throw new Error('Product not found')
-    }
-    Object.assign(product, body)
-    product.save()
-    return product
-}
+  // Find the product by ID
+  const product = await Product.findById(productId);
+  // Check if product exists
+  if (!product) {
+    throw new Error('Product not found');
+  }
+  // Check if the body object is empty
+  if (!body || Object.keys(body).length === 0) {
+    throw new Error('Product body is required');
+  }
+  // Update the product fields with the provided body
+  Object.assign(product, body);
+  // Save the updated product
+  await product.save();
+  return product;
+};
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createProductStore = async (body: any, createdBy: any) => {
+  const user = await User.findById(createdBy);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found')
+  }
+  if (user.role !== "tailor") {
+    throw new AppError(httpStatus.FORBIDDEN, 'Only tailors can create product store');
+  }
   if (body.storeId) {
     const store = await Store.findById(body.storeId)
     if (!store) {
@@ -73,6 +92,18 @@ const createProductStore = async (body: any, createdBy: any) => {
   const store = await Store.create({ ...body, createdBy, store: body.storeId })
   await User.findByIdAndUpdate(createdBy, { store: store._id })
   return store
+}
+
+const rateAStore = async(storeId: any, rating: any) => {
+  const store = await Store.findById(storeId);
+  if (!store) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Store not found')
+  }
+  const currentRatings = store.ratingStarsCount;
+  const newRating = currentRatings + rating;
+  store.ratingStarsCount = newRating;
+  await store.save();
+  return store;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -106,4 +137,5 @@ export const ProductService = {
   createProductStore,
   getProductById,
   updateProduct,
+  rateAStore,
 }

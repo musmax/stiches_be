@@ -61,9 +61,42 @@ const GetMe = async (userId: any) => {
   return user
 }
 
+const queryAllUsers = async () => {
+  return User.find();
+}
+
+interface UserBody {
+  firstname: string;
+  lastname: string;
+  profileImage: string;
+}
+
+const editUserById = async (userId: any, userBody: UserBody) => {
+  const doesUserExist = await User.findById(userId);  
+  if (!doesUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  Object.assign(doesUserExist, userBody);
+  // Save the updated user to the database
+  await doesUserExist.save();
+  return doesUserExist;
+};
+
+const fetchUserById = async(userId: any) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return user;
+}
+
+
 export const UserServices = {
   createStudentIntoDB,
   createUserAddress,
   GetMe,
   createUserMeasurement,
+  queryAllUsers,
+  editUserById,
+  fetchUserById,
 }

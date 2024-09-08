@@ -4,14 +4,14 @@ const orderValidationSchema = z.object({
   body: z.object({
     storeId: z.string(),
     paymentMethod: z.string(),
-    deliveryAddress: z.string(),
+    deliveryAddress: z.string().optional(),
     orderCart: z.array(
       z.object({
         productId: z.string(),
         quantity: z.number(),
       }),
     ),
-    deliveryMode: z.string(),
+    deliveryMode: z.string().optional(),
   }),
 })
 const orderVerifyValidationSchema = z.object({

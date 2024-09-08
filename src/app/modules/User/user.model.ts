@@ -13,6 +13,13 @@ const userSchema = new Schema<TUser, UserModel>(
       type: String,
       required: true,
     },
+    profileImage: {
+      type: String,
+    },
+    isTrusted: {
+      type: Boolean,
+      defaultValue: false,
+    },
     lastname: {
       type: String,
       required: true,
@@ -45,17 +52,17 @@ const userSchema = new Schema<TUser, UserModel>(
       default: 'in-progress',
     },
     userMeasurement: {
-      type: Schema.Types.ObjectId, // Changed from String to ObjectId
+      type: Schema.Types.ObjectId,
       ref: 'Measurement',
     },
     userSavedAddresses: [
       {
-        type: Schema.Types.ObjectId, // Changed from String to ObjectId
+        type: Schema.Types.ObjectId,
         ref: 'Address',
       },
     ],
     store: {
-      type: String, // Changed from String to ObjectId
+      type: String,
       ref: 'Store',
     },
     isDeleted: {
