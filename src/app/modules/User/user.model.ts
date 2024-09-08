@@ -76,14 +76,17 @@ const userSchema = new Schema<TUser, UserModel>(
 )
 
 userSchema.pre('save', async function (next) {
-  const user = this // doc
-  // hashing password and save into DB
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds),
-  )
-  next()
-})
+  const user = this;
+  // Only hash the password if it has been modified (or is new)
+  if (user.isModified('password')) {
+    user.password = await bcrypt.hash(
+      user.password,
+      Number(config.bcrypt_salt_rounds),
+    );
+  }
+  next();
+});
+
 
 // set '' after saving password
 userSchema.post('save', function (doc, next) {

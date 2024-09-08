@@ -52,7 +52,7 @@ const getAllMyProducts = catchAsync(async (req, res) => {
   })
 })
 const rateAStore = catchAsync(async (req, res) => {
-  const data = await ProductService.rateAStore(req.query.storeId, req.body)
+  const data = await ProductService.rateAStore(req.body, req.user.id)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

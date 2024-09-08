@@ -94,10 +94,14 @@ const createProductStore = async (body: any, createdBy: any) => {
   return store
 }
 
-const rateAStore = async(storeId: any, rating: any) => {
+const rateAStore = async(body: any, userId: any) => {
+  const {storeId, rating} = body;
   const store = await Store.findById(storeId);
   if (!store) {
     throw new AppError(httpStatus.NOT_FOUND, 'Store not found')
+  }
+  if (store.createdBy === userId) {
+    throw new AppError(httpStatus.FORBIDDEN, 'You cannot rate your own store')
   }
   const currentRatings = store.ratingStarsCount;
   const newRating = currentRatings + rating;

@@ -50,6 +50,7 @@ const productStoreValidationSchema = z.object({
 })
 const storeRatingValidationSchema = z.object({
   body: z.object({
+    storeId: z.string(),
     rating: z.number().min(1).max(5),
   }),
 })

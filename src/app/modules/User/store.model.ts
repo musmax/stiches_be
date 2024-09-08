@@ -10,7 +10,7 @@ const StoreSchema = new Schema<TStore>(
     },
     ratingStarsCount: {
       type: Number,
-      defaultValue: 0,
+      default: 0,
     },
     about: {
       type: String,
