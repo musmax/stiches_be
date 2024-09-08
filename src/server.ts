@@ -9,9 +9,9 @@ let server: Server
 async function main() {
   try {
     await mongoose.connect(config.database_url as string)
-
     // seedSuperAdmin();
-    server = app.listen(config.port, () => {
+    const port = config.port || 4000;
+    server = app.listen(port, () => {
       console.log(`app is listening on port ${config.port}`)
     })
   } catch (err) {
