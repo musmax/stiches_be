@@ -11,6 +11,7 @@ async function main() {
     await mongoose.connect(config.database_url as string)
     // seedSuperAdmin();
     const port = config.port || 4000;
+    console.log(config.database_url);
     server = app.listen(port, () => {
       console.log(`app is listening on port ${config.port}`)
     })
